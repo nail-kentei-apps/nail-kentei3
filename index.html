@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ネイリスト3級 練習帳（2027冬期）</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="ネイル3級">
+<meta name="theme-color" content="#fbf6f3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf6f3; --card:#ffffff; --ink:#2d2427; --sub:#7a6a6f; --line:#eadfdb;
+  --red:#c0384f; --red-soft:#f9e3e7; --ok:#2f8a5b; --ok-soft:#e1f3e8;
+  --warn:#c77a12; --warn-soft:#fbeed8; --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic",-apple-system,"Hiragino Sans",sans-serif;font-size:16px;line-height:1.55}
+body{padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
+header{padding:14px 18px 6px}
+header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.02em}
+header .sync{font-size:11px;color:var(--sub)}
+main{padding:6px 14px 20px;max-width:560px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0}
+.card h2{font-size:16px;margin:0 0 10px}
+.muted{color:var(--sub);font-size:13px}
+.row{display:flex;gap:10px;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font-size:26px;line-height:1.2}
+.stat span{font-size:12px;color:var(--sub)}
+.alert{background:var(--red-soft);color:var(--red);border-radius:12px;padding:12px 14px;font-weight:700;font-size:14px}
+button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
+.btn{display:block;width:100%;padding:14px;border-radius:14px;background:var(--red);color:#fff;font-weight:700;font-size:16px;text-align:center}
+.btn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.ghost{background:transparent;color:var(--sub);border:1px dashed var(--line);font-weight:500}
+.btn.small{display:inline-block;width:auto;padding:8px 12px;font-size:14px;border-radius:10px}
+.btn:active{transform:scale(.98)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:14px}
+.chip small{color:var(--sub);margin-left:4px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;background:var(--red-soft);color:var(--red);font-weight:700}
+.tag.gray{background:var(--bg);color:var(--sub)}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px);z-index:10}
+nav.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--sub);padding:4px 0}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button.on{color:var(--red);font-weight:700}
+/* quiz */
+.q{font-size:17px;font-weight:700;margin:8px 0 14px}
+.choice{display:block;width:100%;text-align:left;padding:14px;border:1.5px solid var(--line);border-radius:12px;margin:8px 0;background:var(--card);font-size:15px}
+.choice.right{border-color:var(--ok);background:var(--ok-soft)}
+.choice.wrong{border-color:var(--red);background:var(--red-soft)}
+.choice.dim{opacity:.55}
+.expl{background:var(--bg);border-radius:12px;padding:12px;font-size:14px;margin-top:10px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .3s}
+/* timer */
+.bigtime{font-size:56px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.02em;line-height:1.1}
+.steptime{font-size:40px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.stepname{font-size:20px;font-weight:700;text-align:center}
+.nextbtn{height:120px;font-size:22px;border-radius:22px}
+.state-warn .bar>i{background:var(--warn)}
+.state-over .bar>i{background:#8b0f24}
+.state-over .steptime{color:var(--red)}
+.plan-item{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.plan-item input[type=text]{flex:1;min-width:0}
+.plan-item input[type=number]{width:62px;text-align:right}
+input[type=text],input[type=number],textarea{font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+textarea{width:100%;min-height:70px}
+.iconbtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:var(--sub);flex:none}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+.plus{color:var(--red);font-weight:700}.minus{color:var(--ok);font-weight:700}
+.hbar{display:flex;align-items:center;gap:8px;font-size:12px;margin:5px 0}
+.hbar .lbl{width:92px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .trk{flex:1;position:relative;height:14px;background:var(--bg);border-radius:4px}
+.hbar .trk i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:#d9a3ad}
+.hbar .trk i.over{background:var(--red)}
+.hbar .trk b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.hbar .val{width:52px;text-align:right;flex:none;font-variant-numeric:tabular-nums}
+/* checklist */
+.ck{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.ck:last-child{border-bottom:none}
+.ck .box{width:24px;height:24px;border-radius:7px;border:2px solid #cdbdb8;flex:none;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ck.on .box{background:var(--red);border-color:var(--red)}
+.ck.on .box::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.ck.on .txt{color:var(--sub);text-decoration:line-through}
+.ck .txt small{display:block;color:var(--sub);font-size:12px;text-decoration:none}
+/* photo */
+.photo-wrap{position:relative;border-radius:12px;overflow:hidden;background:#222;touch-action:none}
+.photo-wrap img{display:block;width:100%;height:auto}
+.photo-wrap svg{position:absolute;inset:0;width:100%;height:100%}
+.slider{display:flex;align-items:center;gap:10px;font-size:13px;margin:6px 0}
+.slider label{width:64px;flex:none;color:var(--sub)}
+.slider input{flex:1}
+.toggle{display:inline-flex;gap:6px;align-items:center;font-size:14px;margin-right:14px}
+.toggle input{width:18px;height:18px;accent-color:var(--red)}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.compare img{width:100%;border-radius:10px;display:block}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:20;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;justify-content:center;z-index:30}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:560px}
+</style>
+</head>
+<body>
+<header>
+  <h1>ネイリスト3級 練習帳</h1>
+  <div class="sync" id="sync">2027年冬期（1/17）対応</div>
+</header>
+<main id="view"></main>
+<nav class="tabs" id="tabs"></nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 試験データ（JNEC 2027年冬期 試験要項より） ================= */
+const EXAM_DATE = new Date('2027-01-17T00:00:00+09:00');
+const APPLY_END = new Date('2026-11-27T23:59:59+09:00');
+const PRACTICAL_SEC = 65*60;
+
+const DEFAULT_PLAN = [
+  {n:'手指消毒（擦式清拭）', m:1},
+  {n:'ファイリング 10本（ラウンド）', m:8},
+  {n:'甘皮処理 左手（ボウル・プッシャー・ニッパー）', m:9},
+  {n:'甘皮処理 右手', m:9},
+  {n:'仕上げ・油分除去', m:3},
+  {n:'ベースコート', m:3},
+  {n:'カラー 1度目（赤）', m:6},
+  {n:'カラー 2度目', m:6},
+  {n:'アート（右手中指・フラワー）', m:10},
+  {n:'トップコート（10本＋アート）', m:4},
+  {n:'見直し・はみ出し修正', m:6},
+];
+
+const CATS = ['試験ルール','衛生・消毒','爪の構造','皮膚科学','爪の病気・トラブル','ネイルケア','ネイルの歴史'];
+
+/* 問題はオリジナル（公式問題の転載ではありません）。a=正解の位置 */
+const QS = [
+ // 試験ルール
+ {id:'r1',c:'試験ルール',q:'3級実技でネイルアートを施す指はどれ？',ch:['右手中指','左手中指','右手薬指','両手の人差し指'],a:0,e:'アートは右手中指のみ。ほかの指に描くと失格になる。'},
+ {id:'r2',c:'試験ルール',q:'2027年冬期3級のアートのテーマは？',ch:['フラワー','フルーツ','ハート','自由'],a:0,e:'テーマは「フラワー」。赤のカラーの上にアクリル絵の具を筆で描くフラットアート。'},
+ {id:'r3',c:'試験ルール',q:'3級で使用するカラーポリッシュの条件として正しいものは？',ch:['赤を2度塗り（パール・ラメ・メタリック不可）','赤を1度塗り','赤のラメを2度塗り','色は自由'],a:0,e:'赤を2度塗り。パール・ラメ・メタリックは使えない。'},
+ {id:'r4',c:'試験ルール',q:'3級の実技試験時間は？',ch:['65分','70分','60分','90分'],a:0,e:'2023年秋期から70分→65分に短縮され、2027年冬期も65分。'},
+ {id:'r5',c:'試験ルール',q:'3級の合格基準として正しい組み合わせは？',ch:['実技50点中38点以上・筆記100点中80点以上','実技50点中30点以上・筆記100点中70点以上','実技100点中80点以上・筆記100点中80点以上','実技・筆記の合計で80%以上'],a:0,e:'実技は減点方式で50点中38点以上、筆記は100点中80点以上。'},
+ {id:'r6',c:'試験ルール',q:'3級のネイルケアで求められる長さと形は？',ch:['フリーエッジ5mm以内・ラウンド','フリーエッジ3mm以内・スクエア','フリーエッジ5mm以内・オーバル','長さ自由・ラウンド'],a:0,e:'ラウンドにカット。フリーエッジは5mm以内で、10本の長さをそろえる。'},
+ {id:'r7',c:'試験ルール',q:'ウェットステリライザーに入っていないと失格になる用具の組み合わせは？',ch:['ウッドスティック・ピンセット・キューティクルニッパー・メタルプッシャー','エメリーボード・ネイルブラシ・コットン','ピンセット・アート筆・パレット','ネイルニッパー・ファイル・ガーゼ'],a:0,e:'4点のうち1つでも足りないと失格。ネイルニッパーを持っていく場合もステリライザーに入れる。'},
+ {id:'r8',c:'試験ルール',q:'3級で持ち込みが禁止されているものはどれ？',ch:['ネイルオイル','液体ソープ','キューティクルクリーム','ポリッシュリムーバー'],a:0,e:'ネイルマシン・オイル類・アートシール・ドットツール（マーブル棒）などは禁止。'},
+ {id:'r9',c:'試験ルール',q:'用材に貼る品名ラベルの注意点は？',ch:['アルファベット表記は不可','英語表記のみ可','ラベルは不要','手書きは不可'],a:0,e:'ステリライザー・コットン・消毒剤・リムーバー・ソープ・キューティクルリムーバー/クリーム・ベース・カラー・トップにラベルが必要。アルファベット表記は不可。'},
+ {id:'r10',c:'試験ルール',q:'現在の3級実技で正しいものは？',ch:['ポリッシュオフは行わず、事前のカラー塗布もしない','事前に赤を塗っておき、試験中にオフする','事前にベースコートだけ塗っておく','カラーは事前に塗ってもよい'],a:0,e:'試験中のポリッシュオフはなく、事前にポリッシュを塗っておくことも禁止。'},
+ // 衛生・消毒
+ {id:'h1',c:'衛生・消毒',q:'「滅菌」の説明として正しいものは？',ch:['すべての微生物を死滅または除去すること','病原性のある微生物を害のない程度まで減らすこと','目に見える汚れを洗い流すこと','微生物の増殖を一時的に抑えること'],a:0,e:'滅菌＝すべての微生物を死滅・除去すること。消毒＝病原性のある微生物を害のない程度まで減らすこと。'},
+ {id:'h2',c:'衛生・消毒',q:'「消毒用エタノール」の濃度は？',ch:['76.9〜81.4vol%','約50vol%','95〜99vol%','99.5vol%以上'],a:0,e:'日本薬局方の消毒用エタノールは76.9〜81.4vol%。無水エタノールより消毒効果が高い。'},
+ {id:'h3',c:'衛生・消毒',q:'逆性石けん（塩化ベンザルコニウムなど）を使うときの注意点は？',ch:['普通の石けんと混ざると効き目が落ちる','お湯で薄めると効き目がなくなる','金属に使うと必ず錆びる','アルコールと一緒には使えない'],a:0,e:'逆性石けんは普通の石けんと混ざると効き目が落ちる。石けんをよく洗い流してから使う。'},
+ {id:'h4',c:'衛生・消毒',q:'消毒の効果をきちんと得るために、まずやることは？',ch:['汚れを落としてから消毒する','汚れの上から消毒剤をかける','乾かしてから洗う','消毒後に汚れを落とす'],a:0,e:'汚れが残っていると消毒剤が効きにくいので、先に洗って汚れを落とす。'},
+ {id:'h5',c:'衛生・消毒',q:'3級実技の最初に行う手指消毒の方法は？',ch:['擦式清拭で手全体（指の間・指先まで）','スプレーを手の甲にかけるだけ','フィンガーボウルにつける','タオルでふくだけ'],a:0,e:'消毒剤をつけたコットンなどで、指の間や指先まで手全体をふき取る（擦式清拭）。'},
+ {id:'h6',c:'衛生・消毒',q:'お客様の爪に白癬（水虫）が疑われるときの正しい対応は？',ch:['施術せず、医療機関の受診をすすめる','消毒してから通常どおり施術する','ポリッシュで隠してあげる','削って取り除く'],a:0,e:'病気が疑われる爪は施術しない。ネイリストは診断も治療もできないので、受診をすすめる。'},
+ {id:'h7',c:'衛生・消毒',q:'ウェットステリライザーの使い方として正しいものは？',ch:['底にコットン等を敷き、刃先が浸かる量の消毒剤を入れる','空のまま器具を立てておく','水道水だけを入れる','器具を入れてふたを密閉し乾燥させる'],a:0,e:'底にコットンかガーゼを敷き、器具の刃先が浸かるくらい消毒剤を入れておく。'},
+ // 爪の構造
+ {id:'s1',c:'爪の構造',q:'爪の主成分は？',ch:['ケラチン（硬ケラチン）','コラーゲン','カルシウム','エラスチン'],a:0,e:'爪は皮膚の角質が変化したもので、主成分は硬ケラチン（タンパク質）。カルシウムが主成分ではない。'},
+ {id:'s2',c:'爪の構造',q:'爪を作り出す部分は？',ch:['ネイルマトリクス（爪母）','ネイルベッド（爪床）','ハイポニキウム（爪下皮）','フリーエッジ'],a:0,e:'爪母（ネイルマトリクス）で爪が作られる。ここを傷めると爪が変形することがある。'},
+ {id:'s3',c:'爪の構造',q:'ルヌーラ（爪半月）の説明として正しいものは？',ch:['作られたばかりで水分が多く、まだ固まりきっていない爪','爪の先の白い部分','爪の横の溝','爪の下の皮膚'],a:0,e:'ルヌーラは爪の根元の白っぽい半月形の部分。作られたばかりで水分が多い。'},
+ {id:'s4',c:'爪の構造',q:'フリーエッジの下にある皮膚は？',ch:['ハイポニキウム（爪下皮）','エポニキウム（上爪皮）','ネイルウォール（爪郭）','ルヌーラ'],a:0,e:'ハイポニキウムはフリーエッジ下の皮膚で、爪の下に異物が入るのを防ぐ。'},
+ {id:'s5',c:'爪の構造',q:'爪甲を下から支えている皮膚は？',ch:['ネイルベッド（爪床）','ネイルマトリクス','ネイルグルーブ','キューティクル'],a:0,e:'ネイルベッドは爪甲の下で爪を支える部分。'},
+ {id:'s6',c:'爪の構造',q:'健康な爪の水分量の目安は？',ch:['12〜16%','1〜3%','30〜40%','50%以上'],a:0,e:'健康な爪の水分は12〜16%ほど。少ないと割れやすく、多いと柔らかくなる。'},
+ {id:'s7',c:'爪の構造',q:'大人の手の爪が伸びる速さの目安は？',ch:['1日約0.1mm','1日約1mm','1日約0.01mm','1日約0.5mm'],a:0,e:'1日約0.1mm（1か月で約3mm）。'},
+ {id:'s8',c:'爪の構造',q:'爪甲の両側にある溝は？',ch:['ネイルグルーブ（爪溝）','ネイルウォール（爪郭）','ストレスポイント','ルヌーラ'],a:0,e:'爪の両側の溝がネイルグルーブ。その外側の皮膚の盛り上がりがネイルウォール。'},
+ {id:'s9',c:'爪の構造',q:'エポニキウム（上爪皮）がある場所は？',ch:['爪の根元（後爪郭）の皮膚','フリーエッジの下','爪の両側の溝','爪甲の表面'],a:0,e:'爪の根元側を覆う皮膚。その先で爪甲にくっついている角質がルースキューティクル。'},
+ // 皮膚科学
+ {id:'k1',c:'皮膚科学',q:'皮膚の3層構造として正しいものは？',ch:['表皮・真皮・皮下組織','表皮・角質層・真皮','角質層・基底層・真皮','表皮・真皮・筋肉'],a:0,e:'皮膚は外側から表皮・真皮・皮下組織。'},
+ {id:'k2',c:'皮膚科学',q:'表皮のいちばん外側の層は？',ch:['角質層','基底層','有棘層','顆粒層'],a:0,e:'表皮は外側から角質層・(透明層)・顆粒層・有棘層・基底層。'},
+ {id:'k3',c:'皮膚科学',q:'表皮で新しい細胞が生まれる、いちばん深い層は？',ch:['基底層','角質層','顆粒層','透明層'],a:0,e:'基底層で細胞が分裂し、上へ押し上げられていく。'},
+ {id:'k4',c:'皮膚科学',q:'手のひらと足の裏にだけ見られる表皮の層は？',ch:['透明層','有棘層','基底層','顆粒層'],a:0,e:'透明層は角質層と顆粒層のあいだにあり、手のひらと足の裏など皮膚の厚い部分にある。'},
+ {id:'k5',c:'皮膚科学',q:'メラニン色素を作る細胞は？',ch:['メラノサイト（色素細胞）','線維芽細胞','角化細胞','脂肪細胞'],a:0,e:'メラノサイトは基底層にあり、メラニンを作る。'},
+ {id:'k6',c:'皮膚科学',q:'表皮のターンオーバー（生まれ変わり）の目安は？',ch:['約28日（4週間）','約7日','約3か月','約1年'],a:0,e:'基底層で生まれた細胞が角質になってはがれるまで、約28日といわれる。'},
+ // 爪の病気・トラブル
+ {id:'d1',c:'爪の病気・トラブル',q:'爪がスプーンのように反り返る状態は？',ch:['さじ状爪（スプーンネイル／コイロニキア）','巻き爪','咬爪症','爪甲剥離症'],a:0,e:'さじ状爪は爪の中央がへこんで反り返る状態。鉄欠乏性貧血などで起こることがある。'},
+ {id:'d2',c:'爪の病気・トラブル',q:'爪白癬（オニコマイコーシス）の原因は？',ch:['真菌（カビ・白癬菌）','細菌（緑膿菌）','ウイルス','栄養不足'],a:0,e:'白癬菌（真菌）がうつる病気。施術せずに受診をすすめる。'},
+ {id:'d3',c:'爪の病気・トラブル',q:'爪甲がネイルベッドからはがれて浮く状態は？',ch:['爪甲剥離症（オニコリシス）','爪甲縦裂症','陥入爪','爪甲白斑'],a:0,e:'爪甲剥離症は爪甲がネイルベッドからはがれて浮く状態。'},
+ {id:'d4',c:'爪の病気・トラブル',q:'爪の端が皮膚にくい込む状態は？',ch:['陥入爪（オニコクリプトーシス）','咬爪症','翼状爪','さじ状爪'],a:0,e:'陥入爪は爪の端が皮膚にくい込み、炎症を起こすことがある。'},
+ {id:'d5',c:'爪の病気・トラブル',q:'爪をかむ癖による状態は？',ch:['咬爪症（オニコファジー）','爪甲剥離症','爪囲炎','爪甲横溝'],a:0,e:'咬爪症は爪をかむ癖でフリーエッジがほとんどない状態。'},
+ {id:'d6',c:'爪の病気・トラブル',q:'爪に横向きの溝（ボー線）ができる原因として考えられるものは？',ch:['高熱や病気などで一時的に爪の成長が妨げられた','爪の水分が多すぎる','ポリッシュを長く塗っていた','爪をかむ癖'],a:0,e:'爪甲横溝（ボー線）は、病気や高熱などで一時的に爪の成長が妨げられるとできる。'},
+ {id:'d7',c:'爪の病気・トラブル',q:'グリーンネイルの主な原因は？',ch:['緑膿菌（細菌）','白癬菌（真菌）','ポリッシュの色素沈着','栄養不足'],a:0,e:'爪と人工物のすき間などで緑膿菌が増えて緑色になる。施術せずに受診をすすめる。'},
+ {id:'d8',c:'爪の病気・トラブル',q:'爪甲にできる白い点やすじは？',ch:['爪甲白斑（リューコニキア）','爪甲剥離症','グリーンネイル','さじ状爪'],a:0,e:'爪甲白斑は、ぶつけた衝撃などで爪に空気が入って白く見える状態など。'},
+ {id:'d9',c:'爪の病気・トラブル',q:'キューティクルが爪甲の上に伸びてくっつく状態は？',ch:['翼状爪（テリジウム）','ハングネイル','陥入爪','爪甲横溝'],a:0,e:'翼状爪はキューティクルが爪甲の上に伸びてくっつく状態。'},
+ {id:'d10',c:'爪の病気・トラブル',q:'ささくれのことを何という？',ch:['ハングネイル','テリジウム','オニコリシス','ルヌーラ'],a:0,e:'ささくれ＝ハングネイル。キューティクルニッパーで丁寧に取り除く。'},
+ // ネイルケア
+ {id:'c1',c:'ネイルケア',q:'エメリーボードの正しい使い方は？',ch:['一方向に動かして削る','往復させて素早く削る','爪の表面を強くこする','水につけてから使う'],a:0,e:'往復させると爪の層がはがれやすくなるので、一方向に動かして削る。'},
+ {id:'c2',c:'ネイルケア',q:'フィンガーボウルに指先をつける主な目的は？',ch:['キューティクルを柔らかくし、汚れを落とす','爪を固くする','ポリッシュの密着をよくする','消毒する'],a:0,e:'ぬるま湯と液体ソープでキューティクルを柔らかくし、汚れも落とす。'},
+ {id:'c3',c:'ネイルケア',q:'メタルプッシャーの主な役割は？',ch:['キューティクルを押し上げる','フリーエッジの長さを整える','ポリッシュを除去する','爪の表面を磨く'],a:0,e:'メタルプッシャーでキューティクルを押し上げ（プッシュアップ）、ルースキューティクルを浮かせる。'},
+ {id:'c4',c:'ネイルケア',q:'キューティクルニッパーで取り除くのは？',ch:['ルースキューティクルやささくれなどの不要な角質','生きている皮膚','フリーエッジ','ネイルベッド'],a:0,e:'取り除くのは不要な角質だけ。生きている皮膚を切ると出血の原因になる。'},
+ {id:'c5',c:'ネイルケア',q:'ベースコートを塗る前にやることは？',ch:['爪表面の油分・水分を取り除く','キューティクルオイルを塗る','ハンドクリームを塗る','爪を濡らしておく'],a:0,e:'油分や水分が残っているとポリッシュが密着しにくい。'},
+ {id:'c6',c:'ネイルケア',q:'ベースコートの主な目的は？',ch:['爪への色素沈着を防ぎ、カラーの密着をよくする','ツヤを出す','乾燥を早める','アートを保護する'],a:0,e:'ベースコートは色素沈着を防ぎ、カラーの密着をよくする。ツヤ出しと保護はトップコートの役目。'},
+ {id:'c7',c:'ネイルケア',q:'カラーリングの正しい順番は？',ch:['ベースコート→カラー→トップコート','カラー→ベースコート→トップコート','トップコート→カラー→ベースコート','カラー→トップコート→ベースコート'],a:0,e:'ベース→カラー（3級は2度塗り）→トップ。アートの上にもトップコートを塗る。'},
+ // 歴史
+ {id:'y1',c:'ネイルの歴史',q:'古代エジプトで爪を染めるのに使われたとされる植物は？',ch:['ヘンナ','ホウセンカ','ベニバナ','藍'],a:0,e:'古代エジプトではヘンナ（指甲花）で爪を染めていたとされる。'},
+ {id:'y2',c:'ネイルの歴史',q:'唐の時代、楊貴妃が爪を染めたといわれる花は？',ch:['ホウセンカ（鳳仙花）','桜','菊','椿'],a:0,e:'楊貴妃は鳳仙花で爪を染めていたといわれる。'},
+ {id:'y3',c:'ネイルの歴史',q:'日本でホウセンカなどを使って爪を赤く染めることを何と呼んだ？',ch:['爪紅（つまべに）','爪化粧','紅爪','指紅'],a:0,e:'ホウセンカやベニバナで爪を赤く染めることを「爪紅」と呼んだ。'},
+ {id:'y4',c:'ネイルの歴史',q:'日本ネイリスト協会（JNA）が設立された年は？',ch:['1985年','1970年','1997年','2005年'],a:0,e:'JNAは1985年に設立された。'},
+];
+
+const CHECK_SECTIONS = [
+ {t:'当日の持ち物', items:[
+   {k:'p1',n:'受験票'},
+   {k:'p2',n:'筆記用具（マークシート用）'},
+   {k:'p3',n:'机・イス拭き用のエタノールとふき取り用品',s:'着席時と退出時に机・イス・モデル用イスをエタノールでふく'},
+   {k:'p4',n:'上着（冬期は待ち時間が寒い）'},
+ ]},
+ {t:'モデル／モデルハンド', items:[
+   {k:'m1',n:'モデル（15歳以上）またはJNEC認定モデルハンド',s:'受験票で選んだほうと同じであること'},
+   {k:'m2',n:'モデルハンドなら左右両方に認定ラベル',s:'アーム・吸盤は使えない。書き込みや印もNG'},
+   {k:'m3',n:'認定チップ10本＋認定ルースキューティクル貼付済み',s:'長さ・形は事前にいじらない',w:1},
+   {k:'m4',n:'ポリッシュを事前に塗っていない',w:1},
+   {k:'m5',n:'モデルなら1週間前からファイル・甘皮処理をしていない'},
+ ]},
+ {t:'テーブルセッティング（必須）', items:[
+   {k:'t1',n:'フィンガーボウル'},{k:'t2',n:'ケア用の水'},{k:'t3',n:'アート用の水'},
+   {k:'t4',n:'ネイルブラシ'},{k:'t5',n:'ガーゼ'},{k:'t6',n:'タオル（無地）'},
+   {k:'t7',n:'トレイ（ガーゼ・タオル・ブラシ用）'},{k:'t8',n:'ペーパータオル（無地）'},
+   {k:'t9',n:'アームレスト'},{k:'t10',n:'ウェットステリライザー'},
+   {k:'t11',n:'ファイル立て＋ファイル類（エメリーボード等）'},{k:'t12',n:'ポリッシュリムーバー'},
+   {k:'t13',n:'ふた付きコットン容器'},{k:'t14',n:'消毒剤'},{k:'t15',n:'液体ソープ'},
+   {k:'t16',n:'キューティクルリムーバー or クリーム'},
+   {k:'t17',n:'アート用品（アクリル絵の具・筆・パレット）'},
+   {k:'t18',n:'ポリッシュ（ベース・赤・トップ）',s:'赤はパール・ラメ・メタリック不可'},
+   {k:'t19',n:'用具・用材用トレイ'},{k:'t20',n:'ふた付きゴミ袋'},
+   {k:'t21',n:'（任意）ポット入りのお湯・予備の水'},
+ ]},
+ {t:'ステリライザーの中身（ないと失格）', items:[
+   {k:'w1',n:'ウッドスティック',w:1,s:'コットンを巻いた状態はNG'},{k:'w2',n:'ピンセット',w:1},
+   {k:'w3',n:'キューティクルニッパー',w:1},{k:'w4',n:'メタルプッシャー',w:1},
+   {k:'w5',n:'底にコットンかガーゼを敷いた'},{k:'w6',n:'刃先が浸かる量の消毒剤を入れた'}, ]},
+ {t:'品名ラベル（アルファベット表記は不可）', items:[
+   {k:'l1',n:'ウェットステリライザー'},{k:'l2',n:'コットン類'},{k:'l3',n:'消毒剤'},
+   {k:'l4',n:'ポリッシュリムーバー'},{k:'l5',n:'液体ソープ'},{k:'l6',n:'キューティクルリムーバー／クリーム'},
+   {k:'l7',n:'ベースコート'},{k:'l8',n:'カラーポリッシュ'},{k:'l9',n:'トップコート'},
+ ]},
+ {t:'最終確認', items:[
+   {k:'f1',n:'容器は無地のプラスチック・ガラス・金属',s:'木・紙・布の容器は不可'},
+   {k:'f2',n:'メッシュ底のトレイを使っていない'},
+   {k:'f3',n:'禁止品を持ち込んでいない',s:'ネイルマシン・オイル類・アートシール・ドットツール・リストにないもの',w:1},
+   {k:'f4',n:'テーブルに直接物を置かない（アームレストかペーパータオルの上）'},
+   {k:'f5',n:'参考画像やデザインを描いた紙を持ち込まない',w:1},
+ ]},
+];
+
+/* ================= 状態と保存 ================= */
+const LS_KEY = 'nail3-2027w';
+let S = {v:1, quiz:{}, checks:{}, plan:clone(DEFAULT_PLAN), logs:[], quizHist:[]};
+function clone(o){return JSON.parse(JSON.stringify(o))}
+
+const store = {
+  ref:null, mode:'local', busy:false, again:false, t:null,
+  loadLocal(){ try{const r=localStorage.getItem(LS_KEY); if(r) S=Object.assign(S, JSON.parse(r));}catch(e){} },
+  async initCloud(){
+    if(!(window.claude && typeof window.claude.use==='function')) return;
+    try{
+      const [db,user] = await Promise.all([claude.use('db'), claude.use('user')]);
+      if(!db||!user) return;
+      const id = await user.id(); if(!id) return;
+      this.ref = db.doc('data/users/'+id+'/state');
+      const snap = await Promise.race([this.ref.get(), new Promise((_,rej)=>setTimeout(()=>rej('timeout'),10000))]);
+      if(snap.exists){ S = Object.assign(S, clone(snap.data())); }
+      else { await this.ref.set(clone(S)); }
+      this.mode='cloud'; setSync();
+      if(!run) render();
+      // 2台目の端末で記録されたら、こちらにも反映する
+      this.ref.onSnapshot(sn=>{
+        if(!sn.exists || sn.metadata.hasPendingWrites || this.busy || this.t_pending) return;
+        const d=JSON.stringify(sn.data()); if(d===this.lastJson) return; this.lastJson=d;
+        S=Object.assign(S, JSON.parse(d));
+        try{localStorage.setItem(LS_KEY, d)}catch(e){}
+        if(!run && !quiz.active) render();
+      }, ()=>{});
+    }catch(e){ this.ref=null; setSync(); }
+  },
+  save(){
+    try{localStorage.setItem(LS_KEY, JSON.stringify(S))}catch(e){}
+    clearTimeout(this.t); this.t_pending=true; this.t=setTimeout(()=>{this.t_pending=false;this.flush()}, 700);
+  },
+  async flush(){
+    if(!this.ref) return;
+    this.lastJson=JSON.stringify(S);
+    if(this.busy){this.again=true;return}
+    this.busy=true;
+    try{ await this.ref.set(clone(S)); }catch(e){ if(e&&e.code==='invalid_argument'){this.ref=null;this.mode='local';setSync();} }
+    this.busy=false;
+    if(this.again){this.again=false;this.flush()}
+  }
+};
+function setSync(){
+  document.getElementById('sync').textContent = '2027年冬期（1/17）対応 ・ ' + (store.mode==='cloud'?'記録はアカウントに保存中':'記録はこの端末に保存');
+}
+
+/* ================= 共通 ================= */
+let tab = 'home';
+const $v = document.getElementById('view');
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = sec => { sec=Math.max(0,Math.round(sec)); const m=Math.floor(sec/60), s=sec%60; return m+':'+String(s).padStart(2,'0'); };
+const fmtSigned = sec => (sec>0?'+':sec<0?'−':'±')+fmt(Math.abs(sec));
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function daysUntil(d){const now=new Date();const t0=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));t0.setHours(0,0,0,0);const t1=new Date(d.toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));t1.setHours(0,0,0,0);return Math.round((t1-t0)/86400000)}
+
+const ICONS = {
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+ quiz:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+ timer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 12l3 3 6-6"/></svg>',
+ photo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>',
+};
+const TABS=[['home','ホーム'],['quiz','筆記'],['timer','タイム'],['check','持ち物'],['photo','写真']];
+function renderTabs(){
+  document.getElementById('tabs').innerHTML = TABS.map(([k,l])=>`<button data-tab="${k}" class="${tab===k?'on':''}">${ICONS[k]}${l}</button>`).join('');
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  if(run && b.dataset.tab!=='timer'){ toast('タイム計測中です'); return; }
+  tab=b.dataset.tab; if(tab==='quiz' && !quiz.active) quiz.view='menu'; render(); window.scrollTo(0,0);
+});
+function render(){ renderTabs(); ({home:vHome,quiz:vQuiz,timer:vTimer,check:vCheck,photo:vPhoto})[tab](); }
+
+/* ================= ホーム ================= */
+function quizStats(cat){
+  const list = cat?QS.filter(q=>q.c===cat):QS;
+  let seen=0, right=0, tot=0;
+  list.forEach(q=>{const r=S.quiz[q.id]; if(r){seen++; right+=r.c; tot+=r.c+r.w;}});
+  return {n:list.length, seen, rate: tot?Math.round(right/tot*100):null};
+}
+function checkStats(){let n=0,d=0;CHECK_SECTIONS.forEach(s=>s.items.forEach(i=>{n++; if(S.checks[i.k]) d++;}));return {n,d}}
+function vHome(){
+  const dExam=daysUntil(EXAM_DATE), dApply=daysUntil(APPLY_END);
+  const qs=quizStats(), cs=checkStats();
+  const lastLog=S.logs[S.logs.length-1];
+  const best=S.logs.length?Math.min(...S.logs.map(l=>l.total)):null;
+  const lastMock = S.quizHist.filter(h=>h.mode==='mock').slice(-1)[0];
+  $v.innerHTML = `
+  ${dApply>=0?`<div class="card alert">申込締切は 11月27日（金）まで（あと${dApply}日）。申込はお済みですか？</div>`:''}
+  <div class="card">
+    <div class="muted">2027年 冬期 ネイリスト技能検定 3級</div>
+    <div style="font-size:15px;font-weight:700">1月17日（日）</div>
+    <div class="bigtime" style="font-size:48px;margin:6px 0">${dExam>0?'あと '+dExam+' 日':dExam===0?'今日が本番！':'おつかれさまでした'}</div>
+  </div>
+  <div class="grid2">
+    <div class="stat"><b>${qs.rate===null?'—':qs.rate+'%'}</b><span>筆記 正答率（${qs.seen}/${qs.n}問 解答済）</span></div>
+    <div class="stat"><b>${lastMock?lastMock.score+'点':'—'}</b><span>最新の模擬試験（合格80点）</span></div>
+    <div class="stat"><b>${S.logs.length}回</b><span>実技タイム練習</span></div>
+    <div class="stat"><b>${best===null?'—':fmt(best)}</b><span>ベストタイム（65分以内）</span></div>
+  </div>
+  <div class="card">
+    <h2>持ち物チェック</h2>
+    <div class="bar"><i style="width:${cs.d/cs.n*100}%"></i></div>
+    <div class="muted" style="margin-top:6px">${cs.d} / ${cs.n} 項目</div>
+  </div>
+  <div class="card">
+    <h2>試験の流れ（2027年冬期）</h2>
+    <table>
+      <tr><td>事前審査</td><td>10分</td></tr>
+      <tr><td>実技（ケア・カラー・アート）</td><td>65分</td></tr>
+      <tr><td>実技審査</td><td>30分</td></tr>
+      <tr><td>筆記準備（片付け含む）</td><td>15分</td></tr>
+      <tr><td>筆記（マークシート）</td><td>30分</td></tr>
+    </table>
+    <p class="muted" style="margin:10px 0 0">合格基準：実技50点中38点以上・筆記100点中80点以上。内容はJNEC「2027年冬期 試験要項」にもとづいています。細かい失格条件は、必ず要項の原本でも確認してください。</p>
+  </div>
+  ${lastLog?`<div class="card"><h2>前回のタイム練習</h2><div class="muted">${new Date(lastLog.d).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>${lapBars(lastLog)}</div>`:''}
+  `;
+}
+
+/* ================= 筆記 ================= */
+const quiz = {view:'menu', active:false, list:[], i:0, picked:null, order:[], answers:[], mode:'', endAt:0, tick:null};
+function startQuiz(mode, cat){
+  let list;
+  if(mode==='random') list=shuffle(QS).slice(0,10);
+  else if(mode==='weak'){ list=QS.filter(q=>{const r=S.quiz[q.id];return r && (r.last===0 || r.w>r.c)}); if(!list.length){toast('苦手な問題はまだありません');return} list=shuffle(list); }
+  else if(mode==='unseen'){ list=QS.filter(q=>!S.quiz[q.id]); if(!list.length){toast('全問解答済みです');return} list=shuffle(list); }
+  else if(mode==='cat') list=shuffle(QS.filter(q=>q.c===cat));
+  else if(mode==='mock') list=shuffle(QS).slice(0,30);
+  Object.assign(quiz,{view:'q',active:true,list,i:0,picked:null,answers:[],mode,cat});
+  quiz.order = list.map(q=>shuffle(q.ch.map((_,k)=>k)));
+  if(mode==='mock'){ quiz.endAt=Date.now()+30*60*1000; clearInterval(quiz.tick); quiz.tick=setInterval(()=>{const el=document.getElementById('mockclock'); const left=(quiz.endAt-Date.now())/1000; if(el) el.textContent=fmt(left); if(left<=0){clearInterval(quiz.tick); finishQuiz();}},500); }
+  render(); window.scrollTo(0,0);
+}
+function answer(k){
+  if(quiz.picked!==null) return;
+  const q=quiz.list[quiz.i]; const ok = k===q.a;
+  quiz.picked=k; quiz.answers[quiz.i]=k;
+  const r=S.quiz[q.id]||{c:0,w:0,last:null}; ok?r.c++:r.w++; r.last=ok?1:0; S.quiz[q.id]=r; store.save();
+  if(quiz.mode==='mock'){ nextQ(); } else render();
+}
+function nextQ(){ quiz.i++; quiz.picked=null; if(quiz.i>=quiz.list.length) finishQuiz(); else { render(); window.scrollTo(0,0);} }
+function finishQuiz(){
+  clearInterval(quiz.tick);
+  const right=quiz.list.filter((q,i)=>quiz.answers[i]===q.a).length;
+  const score=Math.round(right/quiz.list.length*100);
+  S.quizHist.push({d:Date.now(),mode:quiz.mode,n:quiz.list.length,right,score}); if(S.quizHist.length>60) S.quizHist=S.quizHist.slice(-60);
+  store.save(); quiz.view='result'; quiz.active=false; render(); window.scrollTo(0,0);
+}
+function vQuiz(){
+  if(quiz.view==='q'){
+    const q=quiz.list[quiz.i], ord=quiz.order[quiz.i], p=quiz.picked;
+    $v.innerHTML=`
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><span class="tag">${esc(q.c)}</span>
+      <span class="muted">${quiz.i+1} / ${quiz.list.length}${quiz.mode==='mock'?` ・ 残り <b id="mockclock">${fmt((quiz.endAt-Date.now())/1000)}</b>`:''}</span></div>
+      <div class="bar" style="margin-top:10px"><i style="width:${quiz.i/quiz.list.length*100}%"></i></div>
+      <div class="q">${esc(q.q)}</div>
+      ${ord.map(k=>{let cls='choice'; if(p!==null){ if(k===q.a) cls+=' right'; else if(k===p) cls+=' wrong'; else cls+=' dim'; } return `<button class="${cls}" data-ans="${k}">${esc(q.ch[k])}</button>`}).join('')}
+      ${p!==null?`<div class="expl"><b style="color:${p===q.a?'var(--ok)':'var(--red)'}">${p===q.a?'正解！':'不正解'}</b><br>${esc(q.e)}</div>
+      <button class="btn" style="margin-top:14px" id="next">${quiz.i+1<quiz.list.length?'次の問題':'結果を見る'}</button>`:''}
+    </div>
+    <button class="btn ghost" id="quit">やめる</button>`;
+    $v.querySelectorAll('[data-ans]').forEach(b=>b.onclick=()=>answer(+b.dataset.ans));
+    const n=document.getElementById('next'); if(n) n.onclick=nextQ;
+    document.getElementById('quit').onclick=()=>{clearInterval(quiz.tick);quiz.active=false;quiz.view='menu';render()};
+    return;
+  }
+  if(quiz.view==='result'){
+    const right=quiz.list.filter((q,i)=>quiz.answers[i]===q.a).length, score=Math.round(right/quiz.list.length*100);
+    const wrong=quiz.list.map((q,i)=>({q,a:quiz.answers[i]})).filter(x=>x.a!==x.q.a);
+    $v.innerHTML=`
+    <div class="card" style="text-align:center">
+      <div class="muted">${quiz.mode==='mock'?'模擬試験':'練習'}の結果</div>
+      <div class="bigtime">${score}点</div>
+      <div>${right} / ${quiz.list.length} 問正解 ${quiz.mode==='mock'?(score>=80?'<span class="tag" style="background:var(--ok-soft);color:var(--ok)">合格ライン</span>':'<span class="tag">あと'+(80-score)+'点</span>'):''}</div>
+    </div>
+    ${wrong.length?`<div class="card"><h2>間違えた問題</h2>${wrong.map(x=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)"><span class="tag gray">${esc(x.q.c)}</span><div style="font-weight:700;margin:4px 0">${esc(x.q.q)}</div><div style="font-size:14px">${x.a===undefined?'<span class="muted">未解答</span>':'あなた：<span class="plus">'+esc(x.q.ch[x.a])+'</span>'}<br>正解：<b style="color:var(--ok)">${esc(x.q.ch[x.q.a])}</b></div><div class="muted">${esc(x.q.e)}</div></div>`).join('')}</div>`:''}
+    <button class="btn" id="back">メニューへ</button>`;
+    document.getElementById('back').onclick=()=>{quiz.view='menu';render()};
+    return;
+  }
+  const weakN=QS.filter(q=>{const r=S.quiz[q.id];return r&&(r.last===0||r.w>r.c)}).length;
+  const unseenN=QS.filter(q=>!S.quiz[q.id]).length;
+  const mocks=S.quizHist.filter(h=>h.mode==='mock').slice(-5);
+  $v.innerHTML=`
+  <div class="card">
+    <h2>筆記の練習</h2>
+    <button class="btn" data-m="random">ランダム10問</button>
+    <div class="grid2" style="margin-top:10px">
+      <button class="btn sec" data-m="weak">苦手だけ<br><small class="muted">${weakN}問</small></button>
+      <button class="btn sec" data-m="unseen">まだ解いてない<br><small class="muted">${unseenN}問</small></button>
+    </div>
+    <button class="btn sec" style="margin-top:10px" data-m="mock">模擬試験（30問・30分）</button>
+    ${mocks.length?`<div class="muted" style="margin-top:8px">最近の模擬：${mocks.map(m=>m.score+'点').join(' → ')}</div>`:''}
+  </div>
+  <div class="card">
+    <h2>分野別</h2>
+    ${CATS.map(c=>{const s=quizStats(c);return `<button class="chip" data-cat="${esc(c)}" style="display:flex;width:100%;justify-content:space-between;margin:6px 0;border-radius:12px;padding:12px">
+      <span>${esc(c)}</span><span class="muted">${s.rate===null?'未着手':s.rate+'%'} ・ ${s.n}問</span></button>`}).join('')}
+  </div>
+  <p class="muted">問題は公式要項の出題範囲（歴史・衛生と消毒・爪の構造・皮膚科学・爪の病気・ネイルケア）に合わせたオリジナルです。公式テキストや問題集で確認しながら使ってください。問題数は本番と同じではありません（本番の問題数は公表されていません）。</p>`;
+  $v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>startQuiz(b.dataset.m));
+  $v.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>startQuiz('cat',b.dataset.cat));
+}
+
+/* ================= 実技タイム ================= */
+let run = null; // {start, pausedAt, pausedSum, step, laps:[], stepStart}
+let tickH=null, wake=null;
+const now=()=>Date.now();
+function elapsed(){ if(!run) return 0; const end=run.pausedAt||now(); return (end-run.start-run.pausedSum)/1000; }
+function stepElapsed(){ if(!run) return 0; const end=run.pausedAt||now(); return (end-run.stepStart-run.stepPaused)/1000; }
+async function keepAwake(){ try{ if(navigator.wakeLock) wake=await navigator.wakeLock.request('screen'); }catch(e){} }
+function startRun(){
+  if(!S.plan.length){toast('工程を1つ以上入れてください');return}
+  run={start:now(),pausedAt:null,pausedSum:0,step:0,laps:[],stepStart:now(),stepPaused:0,done:false};
+  keepAwake(); render(); tickH=setInterval(updTimer,200); window.scrollTo(0,0);
+}
+function lap(){
+  if(!run||run.pausedAt) return;
+  const p=S.plan[run.step];
+  run.laps.push({n:p.n, t:p.m*60, a:Math.round(stepElapsed())});
+  run.step++; run.stepStart=now(); run.stepPaused=0;
+  if(navigator.vibrate) try{navigator.vibrate(40)}catch(e){}
+  if(run.step>=S.plan.length){ run.done=true; run.total=Math.round(elapsed()); clearInterval(tickH); try{wake&&wake.release()}catch(e){} }
+  render();
+}
+function togglePause(){
+  if(!run) return;
+  if(run.pausedAt){ const d=now()-run.pausedAt; run.pausedSum+=d; run.stepPaused+=d; run.pausedAt=null; }
+  else run.pausedAt=now();
+  render();
+}
+function updTimer(){
+  if(!run||run.done) return;
+  const el=elapsed(), se=stepElapsed(), p=S.plan[run.step], tgt=p.m*60;
+  const g=id=>document.getElementById(id);
+  if(g('t-total')) g('t-total').textContent=fmt(el);
+  if(g('t-left')){ const left=PRACTICAL_SEC-el; g('t-left').textContent= left>=0?'残り '+fmt(left):'時間オーバー '+fmt(-left); g('t-left').style.color=left<0?'var(--red)':left<300?'var(--warn)':'var(--sub)'; }
+  if(g('t-step')) g('t-step').textContent=fmt(se);
+  if(g('t-stepbar')) g('t-stepbar').style.width=Math.min(100,se/tgt*100)+'%';
+  const box=g('t-box'); if(box){ box.classList.toggle('state-warn', se>=tgt*0.85 && se<tgt); box.classList.toggle('state-over', se>=tgt); }
+  if(g('t-diff')){ const planned=S.plan.slice(0,run.step).reduce((a,b)=>a+b.m*60,0)+Math.min(se,tgt); const behind=el-planned; g('t-diff').textContent= Math.abs(behind)<5?'予定どおり':(behind>0?fmt(behind)+' 遅れ':fmt(-behind)+' 早い'); g('t-diff').style.color=behind>30?'var(--red)':'var(--sub)'; }
+}
+function lapBars(log){
+  const max=Math.max(...log.laps.map(l=>Math.max(l.a,l.t)))||1;
+  return log.laps.map(l=>`<div class="hbar"><div class="lbl">${esc(l.n)}</div><div class="trk"><i class="${l.a>l.t?'over':''}" style="width:${l.a/max*100}%"></i><b style="left:${l.t/max*100}%"></b></div><div class="val">${fmt(l.a)}</div></div>`).join('')
+   + `<div class="muted" style="margin-top:6px">合計 ${fmt(log.total)}（目標 ${fmt(log.laps.reduce((a,b)=>a+b.t,0))}）・黒線＝目標、赤＝オーバー</div>`;
+}
+function vTimer(){
+  if(run && run.done){
+    const tgtTotal=run.laps.reduce((a,b)=>a+b.t,0);
+    $v.innerHTML=`
+    <div class="card" style="text-align:center">
+      <div class="muted">今回のタイム</div>
+      <div class="bigtime" style="color:${run.total>PRACTICAL_SEC?'var(--red)':'inherit'}">${fmt(run.total)}</div>
+      <div>${run.total>PRACTICAL_SEC?'<span class="tag">65分オーバー（本番では失格）</span>':'<span class="tag" style="background:var(--ok-soft);color:var(--ok)">65分以内 ・ 余り '+fmt(PRACTICAL_SEC-run.total)+'</span>'}</div>
+    </div>
+    <div class="card"><table><tr><th>工程</th><th>目標</th><th>実際</th><th>差</th></tr>
+      ${run.laps.map(l=>{const d=l.a-l.t;return `<tr><td>${esc(l.n)}</td><td>${fmt(l.t)}</td><td>${fmt(l.a)}</td><td class="${d>0?'plus':'minus'}">${fmtSigned(d)}</td></tr>`}).join('')}
+      <tr><td><b>合計</b></td><td>${fmt(tgtTotal)}</td><td><b>${fmt(run.total)}</b></td><td class="${run.total-tgtTotal>0?'plus':'minus'}">${fmtSigned(run.total-tgtTotal)}</td></tr></table></div>
+    <div class="card"><h2>ふり返りメモ</h2><textarea id="memo" placeholder="例：右手の甘皮で時間がかかった／アートの花びらがにじんだ"></textarea></div>
+    <button class="btn" id="save">記録を保存</button>
+    <button class="btn ghost" style="margin-top:10px" id="discard">保存しない</button>`;
+    document.getElementById('save').onclick=()=>{ S.logs.push({d:Date.now(),laps:run.laps,total:run.total,memo:document.getElementById('memo').value.trim()}); if(S.logs.length>80) S.logs=S.logs.slice(-80); store.save(); run=null; toast('保存しました'); render(); };
+    document.getElementById('discard').onclick=()=>{run=null;render()};
+    return;
+  }
+  if(run){
+    const p=S.plan[run.step], nx=S.plan[run.step+1];
+    $v.innerHTML=`
+    <div class="card" style="text-align:center;padding:12px">
+      <div class="bigtime" id="t-total">${fmt(elapsed())}</div>
+      <div id="t-left" class="muted" style="font-weight:700">残り</div>
+      <div id="t-diff" class="muted" style="font-size:13px"></div>
+    </div>
+    <div class="card" id="t-box">
+      <div class="muted" style="text-align:center">工程 ${run.step+1} / ${S.plan.length} ・ 目標 ${fmt(p.m*60)}</div>
+      <div class="stepname">${esc(p.n)}</div>
+      <div class="steptime" id="t-step">0:00</div>
+      <div class="bar"><i id="t-stepbar" style="width:0"></i></div>
+      <div class="muted" style="text-align:center;margin-top:8px">次：${nx?esc(nx.n):'終了'}</div>
+    </div>
+    <button class="btn nextbtn" id="lap" ${run.pausedAt?'disabled style="opacity:.4"':''}>${nx?'できた！ 次へ →':'できた！ 終了'}</button>
+    <div class="grid2" style="margin-top:12px">
+      <button class="btn sec" id="pause">${run.pausedAt?'再開':'一時停止'}</button>
+      <button class="btn sec" id="abort">中止</button>
+    </div>`;
+    document.getElementById('lap').onclick=lap;
+    document.getElementById('pause').onclick=togglePause;
+    document.getElementById('abort').onclick=()=>confirmBox('計測を中止しますか？記録は残りません。',()=>{clearInterval(tickH);run=null;try{wake&&wake.release()}catch(e){};render()});
+    updTimer(); return;
+  }
+  const sum=S.plan.reduce((a,b)=>a+(+b.m||0),0);
+  const logs=S.logs.slice().reverse();
+  // 工程ごとの平均（同名工程）
+  const avg={}; S.logs.slice(-5).forEach(l=>l.laps.forEach(x=>{(avg[x.n]=avg[x.n]||[]).push(x.a)}));
+  $v.innerHTML=`
+  <div class="card">
+    <h2>実技タイム練習（65分）</h2>
+    <p class="muted" style="margin-top:0">工程が終わるたびに大きいボタンを押すと、工程ごとのタイムが記録されます。時間配分は自分に合わせて変えてください。</p>
+    <button class="btn nextbtn" style="height:84px" id="start">スタート</button>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0">時間配分</h2>
+      <span class="${sum===65?'':'plus'}" style="font-weight:700">${sum}分 / 65分</span></div>
+    <div id="plan">${S.plan.map((p,i)=>`<div class="plan-item">
+      <input type="text" value="${esc(p.n)}" data-pn="${i}">
+      <input type="number" inputmode="numeric" min="0" max="65" value="${p.m}" data-pm="${i}"><span class="muted">分</span>
+      <button class="iconbtn" data-up="${i}" aria-label="上へ">↑</button>
+      <button class="iconbtn" data-del="${i}" aria-label="削除">✕</button></div>
+      ${avg[p.n]?`<div class="muted" style="font-size:12px;margin:-2px 0 4px">直近平均 ${fmt(avg[p.n].reduce((a,b)=>a+b,0)/avg[p.n].length)}</div>`:''}`).join('')}</div>
+    <div class="row" style="margin-top:10px;gap:8px">
+      <button class="btn sec small" id="add">＋ 工程を追加</button>
+      <button class="btn ghost small" id="reset">最初の配分に戻す</button>
+    </div>
+    ${sum!==65?`<p class="muted" style="margin-bottom:0">合計が65分になっていません（余裕を持たせるなら少し短めでもOK）。</p>`:''}
+  </div>
+  ${logs.length?`<div class="card"><h2>練習の記録</h2>
+    ${logs.slice(0,15).map((l,i)=>`<details style="border-bottom:1px solid var(--line);padding:8px 0"${i===0?' open':''}>
+      <summary style="display:flex;justify-content:space-between;cursor:pointer"><span>${new Date(l.d).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
+      <b style="color:${l.total>PRACTICAL_SEC?'var(--red)':'inherit'}">${fmt(l.total)}</b></summary>
+      ${lapBars(l)}${l.memo?`<div class="expl">${esc(l.memo)}</div>`:''}
+      <button class="btn ghost small" style="margin-top:8px" data-dellog="${S.logs.length-1-i}">この記録を削除</button></details>`).join('')}
+  </div>`:''}`;
+  document.getElementById('start').onclick=startRun;
+  $v.querySelectorAll('[data-pn]').forEach(el=>el.onchange=()=>{S.plan[+el.dataset.pn].n=el.value.trim()||'工程';store.save()});
+  $v.querySelectorAll('[data-pm]').forEach(el=>el.onchange=()=>{S.plan[+el.dataset.pm].m=Math.max(0,Math.min(65,+el.value||0));store.save();render()});
+  $v.querySelectorAll('[data-up]').forEach(el=>el.onclick=()=>{const i=+el.dataset.up;if(i>0){[S.plan[i-1],S.plan[i]]=[S.plan[i],S.plan[i-1]];store.save();render()}});
+  $v.querySelectorAll('[data-del]').forEach(el=>el.onclick=()=>{S.plan.splice(+el.dataset.del,1);store.save();render()});
+  $v.querySelectorAll('[data-dellog]').forEach(el=>el.onclick=()=>confirmBox('この記録を削除しますか？',()=>{S.logs.splice(+el.dataset.dellog,1);store.save();render()}));
+  document.getElementById('add').onclick=()=>{S.plan.push({n:'新しい工程',m:3});store.save();render()};
+  document.getElementById('reset').onclick=()=>confirmBox('時間配分を最初の状態に戻しますか？',()=>{S.plan=clone(DEFAULT_PLAN);store.save();render()});
+}
+function confirmBox(msg,ok){
+  const bg=document.createElement('div'); bg.className='modal-bg';
+  bg.innerHTML=`<div class="modal"><div style="font-weight:700;margin-bottom:14px">${esc(msg)}</div><div class="grid2"><button class="btn sec" data-x>キャンセル</button><button class="btn" data-ok>OK</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.querySelector('[data-x]').onclick=()=>bg.remove();
+  bg.querySelector('[data-ok]').onclick=()=>{bg.remove();ok()};
+  bg.onclick=e=>{if(e.target===bg)bg.remove()};
+}
+
+/* ================= 持ち物 ================= */
+function vCheck(){
+  const cs=checkStats();
+  $v.innerHTML=`
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0">持ち物・セッティング</h2><b>${cs.d}/${cs.n}</b></div>
+    <div class="bar" style="margin-top:10px"><i style="width:${cs.d/cs.n*100}%"></i></div>
+    <p class="muted" style="margin-bottom:0"><span class="tag">失格注意</span> がついた項目は、抜けると失格になるので特に気をつけて。</p>
+  </div>
+  ${CHECK_SECTIONS.map(sec=>{const d=sec.items.filter(i=>S.checks[i.k]).length;return `<div class="card">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0 0 4px">${esc(sec.t)}</h2><span class="muted">${d}/${sec.items.length}</span></div>
+    ${sec.items.map(i=>`<div class="ck ${S.checks[i.k]?'on':''}" data-ck="${i.k}"><div class="box"></div><div class="txt">${esc(i.n)} ${i.w?'<span class="tag">失格注意</span>':''}${i.s?`<small>${esc(i.s)}</small>`:''}</div></div>`).join('')}
+  </div>`}).join('')}
+  <button class="btn ghost" id="ckreset">チェックを全部外す（次の練習用）</button>`;
+  $v.querySelectorAll('[data-ck]').forEach(el=>el.onclick=()=>{const k=el.dataset.ck;S.checks[k]=!S.checks[k];if(!S.checks[k])delete S.checks[k];store.save();el.classList.toggle('on');
+    const c=checkStats(); const top=$v.querySelector('.card b'); if(top) top.textContent=c.d+'/'+c.n; $v.querySelector('.card .bar i').style.width=(c.d/c.n*100)+'%';});
+  document.getElementById('ckreset').onclick=()=>confirmBox('チェックを全部外しますか？',()=>{S.checks={};store.save();render()});
+}
+
+/* ================= 写真セルフチェック ================= */
+const ph={src:null,w:0,h:0,grid:true,center:true,guide:true,gx:50,gy:30,gw:22,gh:40,saved:[],selfck:{}};
+const SELF=['10本の長さがそろっている','フリーエッジは5mm以内','左右対称のラウンドになっている','ストレスポイントを削りすぎていない','キューティクルライン付近にポリッシュのすき間・はみ出しがない','赤のムラ・筋がない（2度塗り）','アートは右手中指だけ','アートとカラーにトップコートのツヤがある'];
+function guidePath(){
+  const W=ph.w,H=ph.h, cx=ph.gx/100*W, top=ph.gy/100*H, w=ph.gw/100*W, h=ph.gh/100*H, r=w/2;
+  return `M ${cx-r} ${top+h} L ${cx-r} ${top+r} A ${r} ${r} 0 0 1 ${cx+r} ${top+r} L ${cx+r} ${top+h}`;
+}
+function overlaySVG(){
+  const W=ph.w,H=ph.h; let s='';
+  if(ph.grid){ for(let i=1;i<6;i++){ s+=`<line x1="${W*i/6}" y1="0" x2="${W*i/6}" y2="${H}" stroke="rgba(255,255,255,.35)" stroke-width="${W/400}"/>`; s+=`<line x1="0" y1="${H*i/6}" x2="${W}" y2="${H*i/6}" stroke="rgba(255,255,255,.35)" stroke-width="${W/400}"/>`; } }
+  if(ph.center){ s+=`<line x1="${ph.gx/100*W}" y1="0" x2="${ph.gx/100*W}" y2="${H}" stroke="#ffd84d" stroke-width="${W/300}" stroke-dasharray="${W/60} ${W/90}"/>`; }
+  if(ph.guide){ s+=`<path d="${guidePath()}" fill="none" stroke="#5ff0c0" stroke-width="${W/220}"/>`; }
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${s}</svg>`;
+}
+function vPhoto(){
+  $v.innerHTML=`
+  <div class="card">
+    <h2>写真でセルフチェック</h2>
+    <p class="muted" style="margin-top:0">爪を真上から撮って、ガイド線（中心線・ラウンドの形・グリッド）を重ねて左右対称かどうかを自分の目で確かめる機能です。</p>
+    <label class="btn file-btn">📷 撮影 / 写真を選ぶ<input type="file" accept="image/*" capture="environment" id="file"></label>
+  </div>
+  ${ph.src?`<div class="card" style="padding:10px">
+    <div class="photo-wrap" id="pw"><img src="${ph.src}" alt="">${overlaySVG()}</div>
+    <div class="muted" style="font-size:12px;margin-top:6px">写真をなぞるとガイドが動きます</div>
+    <div style="margin-top:8px">
+      <label class="toggle"><input type="checkbox" data-t="guide" ${ph.guide?'checked':''}>ラウンド</label>
+      <label class="toggle"><input type="checkbox" data-t="center" ${ph.center?'checked':''}>中心線</label>
+      <label class="toggle"><input type="checkbox" data-t="grid" ${ph.grid?'checked':''}>グリッド</label>
+    </div>
+    ${[['gw','幅',5,60],['gh','長さ',5,90],['gx','左右',0,100],['gy','上下',0,95]].map(([k,l,a,b])=>`<div class="slider"><label>${l}</label><input type="range" min="${a}" max="${b}" step="0.5" value="${ph[k]}" data-s="${k}"></div>`).join('')}
+    <button class="btn sec" id="keep" style="margin-top:8px">比較用にとっておく（この画面を開いている間だけ）</button>
+  </div>`:''}
+  ${ph.saved.length?`<div class="card"><h2>比較</h2><div class="compare">${ph.saved.slice(-4).map(s=>`<div><img src="${s.src}"><div class="muted" style="font-size:12px">${s.t}</div></div>`).join('')}</div></div>`:''}
+  <div class="card">
+    <h2>見た目のチェックポイント</h2>
+    ${SELF.map((t,i)=>`<div class="ck ${ph.selfck[i]?'on':''}" data-sc="${i}"><div class="box"></div><div class="txt">${esc(t)}</div></div>`).join('')}
+  </div>`;
+  document.getElementById('file').onchange=e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const rd=new FileReader(); rd.onload=()=>{
+      const im=new Image(); im.onload=()=>{
+        const max=1400, sc=Math.min(1,max/Math.max(im.width,im.height));
+        const c=document.createElement('canvas'); c.width=Math.round(im.width*sc); c.height=Math.round(im.height*sc);
+        c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+        ph.src=c.toDataURL('image/jpeg',.85); ph.w=c.width; ph.h=c.height; vPhoto();
+      }; im.src=rd.result;
+    }; rd.readAsDataURL(f);
+  };
+  $v.querySelectorAll('[data-t]').forEach(el=>el.onchange=()=>{ph[el.dataset.t]=el.checked;redrawOverlay()});
+  $v.querySelectorAll('[data-s]').forEach(el=>el.oninput=()=>{ph[el.dataset.s]=+el.value;redrawOverlay()});
+  $v.querySelectorAll('[data-sc]').forEach(el=>el.onclick=()=>{ph.selfck[el.dataset.sc]=!ph.selfck[el.dataset.sc];el.classList.toggle('on')});
+  const keep=document.getElementById('keep'); if(keep) keep.onclick=()=>{ph.saved.push({src:ph.src,t:new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})});vPhoto();toast('比較に追加しました')};
+  const pw=document.getElementById('pw');
+  if(pw){ let drag=false;
+    const mv=e=>{const r=pw.getBoundingClientRect(); ph.gx=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)); ph.gy=Math.max(0,Math.min(95,(e.clientY-r.top)/r.height*100 - ph.gw*ph.w/ph.h/4)); redrawOverlay(true)};
+    pw.addEventListener('pointerdown',e=>{drag=true;pw.setPointerCapture(e.pointerId);mv(e)});
+    pw.addEventListener('pointermove',e=>{if(drag)mv(e)});
+    pw.addEventListener('pointerup',()=>{drag=false;syncSliders()});
+  }
+}
+function redrawOverlay(){ const pw=document.getElementById('pw'); if(!pw) return; const old=pw.querySelector('svg'); old.outerHTML=overlaySVG(); }
+function syncSliders(){ $v.querySelectorAll('[data-s]').forEach(el=>el.value=ph[el.dataset.s]); }
+
+/* ================= 起動 ================= */
+store.loadLocal(); setSync(); render(); store.initCloud();
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && run && !run.done) keepAwake(); });
+</script>
+</body>
+</html>
