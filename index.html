@@ -338,7 +338,7 @@ function vHome(){
   const best=S.logs.length?Math.min(...S.logs.map(l=>l.total)):null;
   const lastMock = S.quizHist.filter(h=>h.mode==='mock').slice(-1)[0];
   $v.innerHTML = `
-  ${dApply>=0?`<div class="card alert">申込締切は 11月27日（金）まで（あと${dApply}日）。申込はお済みですか？</div>`:''}
+  ${dApply>=0?`<div class="card alert">冬期の申込締切：11月27日（金）・${dApply===0?'今日まで':'あと'+dApply+'日'}</div>`:''}
   <div class="card">
     <div class="muted">2027年 冬期 ネイリスト技能検定 3級</div>
     <div style="font-size:15px;font-weight:700">1月17日（日）</div>
