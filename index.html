@@ -97,6 +97,17 @@ th:first-child,td:first-child{text-align:left}
 .slider input{flex:1}
 .toggle{display:inline-flex;gap:6px;align-items:center;font-size:14px;margin-right:14px}
 .toggle input{width:18px;height:18px;accent-color:var(--red)}
+.ck.conf .box{border-radius:50%;border-color:#e0b77a}
+.ck.conf.on .box{background:var(--warn);border-color:var(--warn)}
+.subh{font-size:12px;font-weight:700;color:var(--sub);margin:12px 0 0;letter-spacing:.05em}
+.subh.conf{color:var(--warn)}
+.links{display:flex;flex-direction:column;gap:6px;margin:8px 0 4px}
+.links a{display:block;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);color:var(--red);font-size:14px;font-weight:700;text-decoration:none}
+.rule{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.rule:last-child{border-bottom:none}
+.rule .ico{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-top:1px}
+.rule.out .ico{background:var(--red)}
+.rule.minus .ico{background:var(--warn)}
 .seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .seg button{flex:1;padding:10px 6px;border-radius:9px;font-size:14px;color:var(--sub)}
 .seg button.on{background:var(--red);color:#fff;font-weight:700}
@@ -207,91 +218,125 @@ const QS = [
 
 const CHECK_SECTIONS = [
  {id:'day',t:'当日の持ち物', items:[
-   {k:'p1',n:'受験票'},
-   {k:'p2',n:'筆記用具（マークシート用）'},
+   {k:'p1',n:'受験票（証明写真を貼ったもの）',s:'スナップ写真・コピー・加工した写真は減点'},
+   {k:'p2',n:'HBかBの鉛筆またはシャープペンシル',s:'ボールペン（消せるものも）・サインペンは不可。貸し出しなし'},
+   {k:'p7',n:'よく消える消しゴム'},
+   {k:'p8',n:'身分証',s:'本人確認を求められることがある'},
+   {k:'p9',n:'（会場による）内履き',s:'受験票で確認'},
+   {k:'p10',n:'（任意）ペットボトルの水かお茶',s:'飲食はこれだけOK'},
    {k:'p3',n:'机・イス拭き用のエタノールとふき取り用品',s:'着席時と退出時に机・イス・モデル用イスをエタノールでふく'},
    {k:'p4',n:'上着（冬期は待ち時間が寒い）'},
+   {k:'p5',n:'髪をまとめるゴム・ピン'},
+   {k:'p16',n:'タイマー（キッチンタイマーなど）',s:'置き場所は自由。ペーパータオルの左上あたりが置きやすい。スマホは不可'},
+   {k:'p14',n:'（任意）腕時計',s:'スマートウォッチは不可'},
+   {k:'p15',n:'（冬期）モデル用のブランケット・ひざ掛け',s:'待ち時間や試験中の寒さ対策。テーブルの上には置かない'},
+   {k:'p6',x:1,n:'アクセサリーは時計だけにした（モデルも）',s:'スマートウォッチなど多機能の電子機器は不可'},
+   {k:'p11',x:1,n:'スマホ・携帯の電源を切ってしまった',s:'時計がわりに使うのも不可'},
+   {k:'p12',x:1,n:'公式問題集のコピーや図案・参考資料を持ち込まない',w:1},
+   {k:'p13',x:1,n:'前髪・サイドの髪が邪魔にならないようにまとめた'},
+ ]},
+ {id:'extra',t:'あると便利なもの（任意）', d:'必須ではない物。テーブルには出さず、カバンに入れておく', items:[
+   {k:'e1',n:'養生テープ or マスキングテープ',s:'ゴミ袋を留めたり、下に敷くペーパーが空調で飛ばないように留めたりする'},
+   {k:'e2',n:'ウェットティッシュ',s:'ちょっとしたふき取り用'},
+   {k:'e3',n:'キッチンペーパー（予備を多めに）'},
+   {k:'e4',n:'ジップロックなどの袋',s:'ゴミや汚れた物を入れて持ち帰る'},
  ]},
  {id:'model',only:'model',t:'モデル', items:[
    {k:'m1',n:'モデル本人（15歳以上）',s:'受験票で「モデル」を選んでいること。同じ人が午前と午後の両方でモデルをすることはできない'},
-   {k:'m6',n:'爪や爪まわりの皮膚に病気がない'},
-   {k:'m7',n:'自爪である',s:'イクステンション・リペアした爪は合わせて2本まで'},
-   {k:'m5',n:'1週間前からファイル・甘皮処理をしていない'},
-   {k:'m4',n:'ポリッシュを塗っていない',w:1},
-   {k:'m8',n:'事前審査の前にモデルと一緒に着席できる',s:'事前審査が始まってから着席すると受験できない',w:1},
+   {k:'m6',x:1,n:'爪や爪まわりの皮膚に病気がない'},
+   {k:'m7',x:1,n:'自爪である',s:'イクステンション・リペアした爪は合わせて2本まで'},
+   {k:'m5',x:1,n:'1週間前からファイル・甘皮処理をしていない'},
+   {k:'m4',x:1,n:'ポリッシュを塗っていない',w:1},
+   {k:'m8',x:1,n:'事前審査の前にモデルと一緒に着席できる',s:'事前審査が始まってから着席すると受験できない',w:1},
  ]},
  {id:'hand',only:'hand',t:'モデルハンド', items:[
    {k:'h1',n:'JNEC認定モデルハンド',s:'受験票で「モデルハンド」を選んでいること'},
-   {k:'m2',n:'右手・左手の両方に認定ラベルが貼ってある'},
+   {k:'m2',x:1,n:'右手・左手の両方に認定ラベルが貼ってある'},
    {k:'m3',n:'認定チップ10本＋認定ルースキューティクルを貼ってある',w:1},
-   {k:'h2',n:'チップの長さ・形を事前にいじっていない',w:1},
-   {k:'h3',n:'ポリッシュを塗っていない',w:1},
-   {k:'h4',n:'キューティクルまわりに目立つ汚れ・キズがない'},
-   {k:'h5',n:'アーム・吸盤をつけていない、書き込みや印がない'},
-   {k:'h6',n:'事前審査の前に着席できる',s:'事前審査が始まってから着席すると受験できない',w:1},
+   {k:'h2',x:1,n:'チップの長さ・形を事前にいじっていない',w:1},
+   {k:'h3',x:1,n:'ポリッシュを塗っていない',w:1},
+   {k:'h4',x:1,n:'キューティクルまわりに目立つ汚れ・キズがない'},
+   {k:'h5',x:1,n:'アーム・吸盤をつけていない、書き込みや印がない'},
+   {k:'h6',x:1,n:'事前審査の前に着席できる',s:'事前審査が始まってから着席すると受験できない',w:1},
  ]},
- {id:'center',t:'テーブル中央', d:'タオルの上にペーパータオルを敷き、モデル側にアームレストを置く', items:[
-   {k:'t6',n:'タオル（無地）'},
-   {k:'t8',n:'ペーパータオル（無地）',s:'アームレスト手前の施術スペースを覆うサイズ。汚れたら替えられるよう数枚重ねておく'},
-   {k:'t9',n:'アームレスト'},
+ {id:'center',t:'テーブル中央（H・I）', d:'施術はアームレストとペーパータオルの上で行う', items:[
+   {k:'t8',n:'H：ペーパータオル（無地）',s:'アームレスト手前の施術スペースを覆うサイズ。汚れたら取り替える'},
+   {k:'t9',n:'I：アームレスト'},
+   {k:'a1',x:1,n:'アームレストをペーパータオルで巻いた'},
  ]},
- {id:'tray1',t:'ガーゼ・タオル・ブラシ用トレイ', d:'このトレイにはガーゼ・タオル・ネイルブラシだけを置く', items:[
-   {k:'t7',n:'トレイ本体（無地・メッシュ底でないもの）'},
-   {k:'t5',n:'ガーゼ'},
-   {k:'c1',n:'タオル（トレイ用）'},
-   {k:'t4',n:'ネイルブラシ（消毒済み）'},
-   {k:'c2',n:'ガーゼ・タオル・ネイルブラシ以外をのせていない'},
+ {id:'tray1',t:'ガーゼ・タオル・ブラシ用トレイ（G）', d:'このトレイにはガーゼ・タオル・ネイルブラシだけを置く', items:[
+   {k:'t7',n:'G：トレイ本体'},
+   {k:'t5',n:'E：ガーゼ'},
+   {k:'t6',n:'F：タオル（無地）'},
+   {k:'t4',n:'D：ネイルブラシ'},
+   {k:'c2',x:1,n:'ガーゼ・タオル・ネイルブラシ以外をのせていない'},
  ]},
- {id:'water',t:'トレイに入れなくてよいもの', items:[
-   {k:'t1',n:'フィンガーボウル',s:'ぬるま湯に液体ソープを少し入れる'},
-   {k:'t2',n:'ケア用の水',s:'ガーゼを湿らせる用'},
-   {k:'t3',n:'アート用の水'},
-   {k:'t21',n:'（任意）ポット入りのお湯'},
+ {id:'water',t:'トレイに入れなくてよいもの（A〜C・湯・水）', items:[
+   {k:'t1',n:'A：フィンガーボール',s:'ぬるま湯に液体ソープを少し入れる'},
+   {k:'t2',n:'B：ケア用の水',s:'ガーゼを湿らせる用'},
+   {k:'t3',n:'C：アート用の水'},
+   {k:'t21',n:'（任意）お湯（携帯用ポット）'},
    {k:'c3',n:'（任意）注ぎ足し用の水'},
  ]},
- {id:'steri',t:'ウェットステリライザー（中身がないと失格）', items:[
-   {k:'t10',n:'ステリライザー本体',s:'消毒剤で変質しない容器'},
-   {k:'w5',n:'底にコットンかガーゼを敷いた'},
-   {k:'w6',n:'ニッパーの刃先が浸かる量の消毒剤を入れた'},
+ {id:'steri',t:'ウェットステリライザー（J・中身がないと失格）', items:[
+   {k:'t10',n:'J：ステリライザー本体',s:'消毒剤で変質しない容器'},
+   {k:'w5',x:1,n:'底にコットンかガーゼを敷いた',s:'刃先保護用パッドを使う場合は、その上にコットンかガーゼを敷く'},
+   {k:'w6',x:1,n:'ニッパーの刃先が浸かる量の消毒剤を入れた'},
    {k:'w1',n:'ウッドスティック',w:1,s:'コットンを巻いた状態はNG'},
    {k:'w2',n:'ピンセット',w:1},
    {k:'w3',n:'キューティクルニッパー',w:1},
    {k:'w4',n:'メタルプッシャー',w:1},
  ]},
- {id:'file',t:'ファイル立て', d:'ファイル類はファイル立てに入れる。中身はスクールの指定に合わせて「項目を編集」で追加・削除してください', items:[
-   {k:'t11',n:'ファイル立て本体'},
+ {id:'file',t:'ファイル立て（K）', d:'ファイル類はファイル立てに入れる。中身はスクールの指定に合わせて「項目を編集」で追加・削除してください', items:[
+   {k:'t11',n:'K：ファイル立て本体'},
    {k:'c4',n:'エメリーボード（自爪用）'},
+   {k:'c15',n:'ファイル'},
    {k:'c5',n:'スポンジファイル（スポンジバッファー）'},
+   {k:'c13',n:'ダストブラシ',s:'ファイル立てに一緒に立てておく'},
  ]},
- {id:'tray2',t:'用具・用材トレイ', d:'用具・用材はトレイの中に置く（並べ方は自由）', items:[
-   {k:'t19',n:'トレイ本体（無地・メッシュ底でないもの）'},
-   {k:'t12',n:'ポリッシュリムーバー'},
-   {k:'t13',n:'ふた付きコットン容器'},
-   {k:'c6',n:'コットン（容器の中）'},
-   {k:'t14',n:'消毒剤'},
-   {k:'t15',n:'液体ソープ'},
-   {k:'t16',n:'キューティクルリムーバー or クリーム'},
-   {k:'c7',n:'ベースコート'},
-   {k:'c8',n:'カラーポリッシュ（赤）',s:'パール・ラメ・メタリックは不可'},
-   {k:'c9',n:'トップコート'},
-   {k:'c10',n:'アクリル絵の具（使う色）'},
-   {k:'c11',n:'アート用の筆'},
-   {k:'c12',n:'パレット'},
+ {id:'tray2',t:'用具・用材トレイ（S）', d:'用具・用材は全部このトレイの中に置く（並べ方は自由）。左利きなら左右のトレイを入れ替える', items:[
+   {k:'t19',n:'S：トレイ本体'},
+   {k:'t12',n:'L：ポリッシュリムーバー'},
+   {k:'t13',n:'M：コットン類（ふた付き容器に入れる）'},
+   {k:'c6',n:'M：コットン（容器の中）'},
+   {k:'c14',n:'M：小さくカットしたペーパー（容器の中）',s:'コットン容器に一緒に入れてOK（公式Q&A）'},
+   {k:'t14',n:'N：消毒剤（消毒用エタノールなど）'},
+   {k:'t15',n:'O：液体ソープ'},
+   {k:'t16',n:'P：キューティクルリムーバー or キューティクルクリーム'},
+   {k:'c10',n:'Q：アクリル絵の具（使う色）'},
+   {k:'c11',n:'Q：アート用の筆'},
+   {k:'c12',n:'Q：パレット'},
+   {k:'c7',n:'R：ベースコート'},
+   {k:'c8',n:'R：カラーポリッシュ（赤）',s:'パール・ラメ・メタリックは不可'},
+   {k:'c9',n:'R：トップコート'},
+   {k:'c16',n:'（任意）プレプライマー',s:'使う場合は品名ラベルを貼る'},
+   {k:'s1',x:1,n:'ステリライザー（J）とファイル立て（K）もトレイの中に置いた'},
+   {k:'s2',x:1,n:'ネイル用品・美容用品を使っている'},
  ]},
- {id:'trash',t:'ゴミ袋', items:[
-   {k:'t20',n:'ふた付きゴミ袋'},
+ {id:'trash',t:'ゴミ袋（T）', d:'溶剤のにおいが広がらないよう配慮したゴミ袋を設置する。ふた付きに加工した袋などが推奨',
+  links:[{t:'公式のゴミ袋設置例（PDF）',u:'https://www.nail-kentei.or.jp/pdf/gomibukurosetting.pdf'},{t:'テープの留め方（動画）',u:'https://www.nail-kentei.or.jp/movie/gomibukurosetting_movie.mp4'}],
+  items:[
+   {k:'t20',n:'T：ゴミ袋（手提げのない袋）'},
+   {k:'g1',n:'セロテープ（ゴミ袋の固定用）'},
+   {k:'g2',x:1,n:'テープで3か所しっかり留め、口がたるまないようにした',s:'ふた付きに加工する場合は、袋の右端・左端・裏側の中央の3か所を留める'},
+   {k:'g3',x:1,n:'テープ1か所留め・手提げ付きの袋になっていない',s:'口がたるんだり大きく開いたりするNG例'},
  ]},
- {id:'label',t:'品名ラベル（アルファベット表記は不可）', items:[
-   {k:'l1',n:'ウェットステリライザー'},{k:'l2',n:'コットン類'},{k:'l3',n:'消毒剤'},
-   {k:'l4',n:'ポリッシュリムーバー'},{k:'l5',n:'液体ソープ'},{k:'l6',n:'キューティクルリムーバー／クリーム'},
-   {k:'l7',n:'ベースコート'},{k:'l8',n:'カラーポリッシュ'},{k:'l9',n:'トップコート'},
+ {id:'label',t:'品名ラベル', d:'次の用材にラベルを貼る（アルファベット表記は不可）', items:[
+   {k:'l1',x:1,n:'ウェットステリライザー'},{k:'l2',x:1,n:'コットン類'},{k:'l3',x:1,n:'消毒剤'},
+   {k:'l4',x:1,n:'ポリッシュリムーバー'},{k:'l5',x:1,n:'液体ソープ'},{k:'l6',x:1,n:'キューティクルリムーバー／キューティクルクリーム（使うほう）'},
+   {k:'l7',x:1,n:'ベースコート'},{k:'l8',x:1,n:'カラーポリッシュ'},{k:'l9',x:1,n:'トップコート'},
+   {k:'l11',x:1,n:'（使う場合）プレプライマー'},
+   {k:'l10',x:1,n:'中身がわからない容器にもラベルを貼った'},
  ]},
  {id:'final',t:'最終確認', items:[
-   {k:'f1',n:'容器は無地のプラスチック・ガラス・金属',s:'木・紙・布の容器は不可'},
-   {k:'f2',n:'メッシュ底のトレイを使っていない'},
-   {k:'f3',n:'禁止品を持ち込んでいない',s:'ネイルマシン・オイル類・アートシール・ドットツール・リストにないもの',w:1},
-   {k:'f4',n:'テーブルに直接物を置かない（アームレストかペーパータオルの上）'},
-   {k:'f5',n:'参考画像やデザインを描いた紙を持ち込まない',w:1},
+   {k:'f6',x:1,n:'A〜Tの用具・用材を全部セッティングした'},
+   {k:'f1',x:1,n:'トレイ・フィンガーボール・容器は消毒できる無地のプラスチック・ガラス・金属',s:'木・紙・布の容器は不可'},
+   {k:'f2',x:1,n:'底が網目状のトレイを使っていない'},
+   {k:'f3',x:1,n:'禁止品を持ち込んでいない',s:'ネイルマシーン・オイル類・アート用シール・ドットペン（マーブルツール）・A〜T以外の用具や用材',w:1},
+   {k:'f4',x:1,n:'実技中も用具・用材はトレイに戻す',s:'一時的にペーパータオル（H）の上に置くのはOK。テーブルに直置きしない'},
+   {k:'f5',x:1,n:'参考画像やデザインを描いた紙を持ち込まない',w:1},
+   {k:'f7',x:1,n:'ウォッシャブルファイルを使わない',s:'自爪への使用は採点基準で禁止'},
+   {k:'f8',x:1,n:'ネイル用品・美容用品以外を使っていない',s:'食品容器・台所用品などを容器がわりにしない'},
  ]},
 ];
 
@@ -360,7 +405,7 @@ const ICONS = {
  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 12l3 3 6-6"/></svg>',
  photo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>',
 };
-const TABS=[['home','ホーム'],['quiz','筆記'],['timer','タイム'],['check','持ち物'],['photo','写真']];
+const TABS=[['home','ホーム'],['quiz','筆記'],['timer','タイム'],['check','チェック'],['photo','写真']];
 function renderTabs(){
   document.getElementById('tabs').innerHTML = TABS.map(([k,l])=>`<button data-tab="${k}" class="${tab===k?'on':''}">${ICONS[k]}${l}</button>`).join('');
 }
@@ -644,12 +689,130 @@ function confirmBox(msg,ok){
 }
 
 /* ================= 持ち物 ================= */
+
+/* ================= 採点ポイント（JNEC 3級 実技採点基準 2026年3月改訂より要約） ================= */
+const SCORE = [
+ {id:'model',only:'model',t:'モデルの爪',tag:'事前審査',pts:[
+   'イクステンション・リペアした爪は2本以内','1週間以内にキューティクルケアやファイリングをしていない','モデルは15歳以上で、爪や爪まわりの皮膚に病気がない','ポリッシュが塗られていない']},
+ {id:'hand',only:'hand',t:'認定モデルハンドの状態',tag:'事前審査',pts:[
+   'JNEC認定ラベルのついた右手・左手を使う','キューティクルまわりに目立つ汚れ・キズがない','認定チップ10本を装着し、長さ・形を加工していない','固定具（アーム・吸盤）や書き込み・印がない','チップが外れたらすぐ付け直す','終了時はチップを全部付けて、指を伸ばした状態にする','ポリッシュが塗られていない']},
+ {id:'file',t:'ファイル・エメリーボードの扱い方',tag:'工程審査',pts:[
+   'エメリーボードなどを使う（ウォッシャブルファイルは不可）','往復がけをしない（一方向に動かす）','ファイル前にネイルニッパーを使うのはOK（チップカッターは不可）']},
+ {id:'table',t:'テーブルセッティング＆消毒管理',tag:'事前審査',pts:[
+   '用具・用材が衛生的に処理され、品名ラベルが貼ってある','アームレストとペーパータオルの上で施術し、テーブルに直置きしない','ステリライザーにニッパーの刃先が浸かる量の消毒液と、ニッパー・ピンセット・ウッドスティック・メタルプッシャーが入っている','手指消毒は手の平・甲・指先・指の間まで擦式清拭（手に直接スプレーしない。落とした物の消毒など例外あり）']},
+ {id:'round',t:'ラウンド仕上がり',pts:['ラウンドに整える','10本の形と長さのバランスがそろっている']},
+ {id:'push',t:'プッシャーの使用方法',tag:'工程審査',pts:[
+   'ケア用の水を使う','キューティクルクリームかキューティクルリムーバーを使う','メタルプッシャーでプッシュバック・プッシュアップを10本全部に行う']},
+ {id:'nipper',t:'ニッパーハンドリング',tag:'工程審査',pts:['キューティクルニッパーを10本全部に使う']},
+ {id:'clean',t:'クリーンナップ仕上がり',pts:[
+   'ケア用の水とガーゼで10本クリーンナップする','ガーゼを引きずらず、衛生的に扱う','ブラシダウンをする','ささくれなどを処理する']},
+ {id:'color',t:'カラー表面・色むら',tag:'工程審査',pts:[
+   'ベース・カラー・トップを表面とエッジに塗る','10本全部に赤を2度塗りする','ムラ・筋がない']},
+ {id:'line',t:'カラーラインどり',pts:[
+   'キューティクルラインがそろっている','皮膚についたポリッシュを修正する','サイドラインまで塗れている']},
+ {id:'art',t:'ネイルアート',pts:['テーマ（フラワー）に合ったデザイン','筆だけで描く（右手中指）','アートの上にもトップコートを塗る']},
+ {id:'all',t:'全体の仕上がり',pts:[
+   'モデルの手・モデルハンドを丁寧に扱う','用具を正しく、なめらかに使う','規定を守っている','髪をまとめて衛生的にしている','アクセサリーは時計だけ（多機能の電子機器は不可）','ゴミは持ち帰る','手指やモデルハンドに傷をつけない・出血させない']},
+];
+
+/* ================= 失格・減点（2027年冬期 試験要項より要約） ================= */
+const RULES = {
+ out:[
+  '事前審査の開始までにモデル（またはモデルハンド）と着席していない → 受験できない',
+  '受験票のモデル選択（モデル／モデルハンド）と違う → 受験できない（筆記も不可）',
+  'ステリライザーがない、またはウッドスティック・ピンセット・キューティクルニッパー・メタルプッシャーのどれかが入っていない',
+  '禁止の用具・用材（ネイルマシーン・オイル類・アート用シール・ドットペンなど）をセッティングした',
+  '事前審査の開始後に用具・用材を貸し借りした、試験官の許可なく出し入れした',
+  'モデルハンドで左右の認定ラベルがない／認定チップ10本を付けていない／チップの長さ・形を事前に加工した',
+  'モデルハンドで、終了時に全部の指にチップが付いていない',
+  '事前にカラーポリッシュを塗っていた',
+  'カラーやアートの仕上げにトップコートを塗っていない',
+  'カラーポリッシュを1度塗りしかしていない',
+  'メタルプッシャー・キューティクルニッパーを10本全部に使っていない',
+  'カラー・クリア・ホワイトのチップを使った',
+  '事前審査中や実技終了後に作品にさわった',
+  '時間オーバー',
+  '手指を出血させた、施術する指を間違えた（アートは右手中指）',
+  'カンニングなどの不正、試験官の指示に従わない、そのほかの規定違反',
+  '同じモデルが午前・午後の両方に出た',
+  '減点が3項目以上ある、または1項目がとてもひどい',
+ ],
+ minus:[
+  '受験票の写真がない・スナップ写真・コピー・加工写真',
+  '受験票・写真・筆記用具を忘れた',
+  '用具・用材を忘れた、使えない用具・用材をセッティングした',
+  'テーブルセッティングがとても不衛生、整理されていない',
+  'ラベルが必要な品目に貼っていない、アルファベットで書いた',
+  'ネイルニッパーを持っていったのにステリライザーに入れていない',
+  '手指や用具の消毒が不適切',
+  '手指消毒を自分の手からではなく、モデル（モデルハンド）から始めた',
+  '事前に消毒剤をしみこませたコットンなどを用意して消毒した',
+  '用具を落としたときの手順を守らなかった（挙手→拾う→用具消毒→手指消毒→「消毒しました」と申告）',
+  '手指やモデルハンドにダメージ（赤みも含む）を与えた',
+  '実技内容どおりに施術していない',
+  'カラーが指定色（赤）より薄すぎる・濃すぎる',
+  '私語が多い・マナーが悪い（モデルも）、ゴミを持ち帰らない',
+ ],
+};
+function vRules(){
+  $v.innerHTML=`${segView()}
+  <div class="card">
+    <h2>失格になること</h2>
+    <div class="muted" style="font-size:12px;margin-bottom:6px">1つでも当てはまると、点数に関係なく不合格</div>
+    ${RULES.out.filter(t=>(S.modelType==='hand')||!t.startsWith('モデルハンドで')).map(t=>`<div class="rule out"><span class="ico">✕</span><span>${esc(t)}</span></div>`).join('')}
+  </div>
+  <div class="card">
+    <h2>減点されること</h2>
+    <div class="muted" style="font-size:12px;margin-bottom:6px">3項目以上で失格になるので要注意</div>
+    ${RULES.minus.map(t=>`<div class="rule minus"><span class="ico">!</span><span>${esc(t)}</span></div>`).join('')}
+  </div>
+  <div class="card">
+    <h2>用具を落としたときの手順</h2>
+    <ol style="margin:0;padding-left:20px;font-size:15px;line-height:1.9"><li>手を挙げて試験官に知らせる</li><li>落とした物を拾う</li><li>用具を消毒する</li><li>手指を消毒する</li><li>「消毒しました」と申告する</li></ol>
+  </div>
+  <div class="links"><a href="https://www.nail-kentei.or.jp/pdf/youkou_01.pdf" target="_blank" rel="noopener">公式の試験要項（PDF） ↗</a></div>
+  <p class="muted" style="font-size:12px">2027年冬期の試験要項をもとにまとめています。要項の表は級ごとに○がついているので、細かいところは原本でも確認してください。</p>`;
+  bindSegView();
+}
+
+let chkView='items';
+function segView(){ return `<div class="seg" style="margin-bottom:4px">
+  <button data-cv="items" class="${chkView==='items'?'on':''}">持ち物</button>
+  <button data-cv="score" class="${chkView==='score'?'on':''}">採点ポイント</button>
+  <button data-cv="rules" class="${chkView==='rules'?'on':''}">失格・減点</button></div>`; }
+function bindSegView(){ $v.querySelectorAll('[data-cv]').forEach(b=>b.onclick=()=>{chkView=b.dataset.cv;vCheck();window.scrollTo(0,0)}); }
+function vScore(){
+  const mt=S.modelType||'model'; const secs=SCORE.filter(x=>!x.only||x.only===mt);
+  let n=0,d=0; secs.forEach(sec=>sec.pts.forEach((_,i)=>{n++; if(S.checks['sc-'+sec.id+'-'+i]) d++;}));
+  $v.innerHTML=`${segView()}
+  <div class="card">
+    <h2>実技の採点ポイント</h2>
+    <div style="font-size:14px">各項目5点満点で採点されます（5 良い／4 合格ライン／3 やや不足／2 良くない／1 悪い）。合計50点中38点以上で合格です。失格に当たると、点数に関係なく不合格になります。</div>
+    <div class="links"><a href="https://www.nail-kentei.or.jp/pdf/saiten3.pdf" target="_blank" rel="noopener">公式の実技採点基準（PDF） ↗</a></div>
+    <div class="muted" style="font-size:12px">練習が終わったら、できていたところにチェックを入れて見直しに使ってください。</div>
+    <div class="row" style="justify-content:space-between;margin-top:10px"><span class="muted">できていた項目</span><b id="sccount">${d}/${n}</b></div>
+    <div class="bar" style="margin-top:6px"><i id="scbar" style="width:${n?d/n*100:0}%"></i></div>
+  </div>
+  ${secs.map(sec=>`<div class="card">
+    <div class="row" style="justify-content:space-between;align-items:flex-start"><h2 style="margin:0 0 6px">${esc(sec.t)}</h2>${sec.tag?`<span class="tag gray" style="flex:none">${sec.tag}</span>`:''}</div>
+    ${sec.pts.map((t,i)=>{const k='sc-'+sec.id+'-'+i;return `<div class="ck conf ${S.checks[k]?'on':''}" data-sc2="${k}"><div class="box"></div><div class="txt">${esc(t)}</div></div>`}).join('')}
+  </div>`).join('')}
+  <p class="muted" style="font-size:12px">「工程審査」は施術の途中も見られる項目、「事前審査」は実技開始前の審査に含まれる項目です。</p>
+  <button class="btn ghost" id="screset">チェックを全部外す（次の練習用）</button>`;
+  bindSegView();
+  $v.querySelectorAll('[data-sc2]').forEach(el=>el.onclick=()=>{const k=el.dataset.sc2;S.checks[k]=!S.checks[k];if(!S.checks[k])delete S.checks[k];store.save();el.classList.toggle('on');
+    let n=0,d=0; secs.forEach(sec=>sec.pts.forEach((_,i)=>{n++; if(S.checks['sc-'+sec.id+'-'+i]) d++;})); document.getElementById('sccount').textContent=d+'/'+n; document.getElementById('scbar').style.width=(n?d/n*100:0)+'%';});
+  document.getElementById('screset').onclick=()=>confirmBox('採点ポイントのチェックを全部外しますか？',()=>{Object.keys(S.checks).forEach(k=>{if(k.startsWith('sc-'))delete S.checks[k]});store.save();vScore()});
+}
+
 let ckEdit=false;
 function updCkHead(){ const c=checkStats(); const a=document.getElementById('ckcount'); if(a) a.textContent=c.d+'/'+c.n; const b=document.getElementById('ckbar'); if(b) b.style.width=(c.n?c.d/c.n*100:0)+'%';
   visSections().forEach(sec=>{const el=document.getElementById('cks-'+sec.id); if(el){const its=secItems(sec); el.textContent=its.filter(i=>S.checks[i.k]).length+'/'+its.length;}}); }
 function vCheck(){
+  if(chkView==='score') return vScore();
+  if(chkView==='rules') return vRules();
   const cs=checkStats();
-  $v.innerHTML=`
+  $v.innerHTML=`${segView()}
   <div class="card">
     <div class="row" style="justify-content:space-between"><h2 style="margin:0">持ち物・セッティング</h2><b id="ckcount">${cs.d}/${cs.n}</b></div>
     <div class="bar" style="margin-top:10px"><i id="ckbar" style="width:${cs.n?cs.d/cs.n*100:0}%"></i></div>
@@ -663,8 +826,11 @@ function vCheck(){
   ${visSections().map(sec=>{const its=secItems(sec);const d=its.filter(i=>S.checks[i.k]).length;return `<div class="card">
     <div class="row" style="justify-content:space-between"><h2 style="margin:0 0 4px">${esc(sec.t)}</h2><span class="muted" id="cks-${sec.id}">${d}/${its.length}</span></div>
     ${sec.d?`<div class="muted" style="font-size:12px;margin-bottom:4px">${esc(sec.d)}</div>`:''}
-    ${its.map(i=>`<div class="ck ${S.checks[i.k]?'on':''}" data-ck="${i.k}"><div class="box"></div><div class="txt" style="flex:1">${esc(i.n)} ${i.w?'<span class="tag">失格注意</span>':''}${i.s?`<small>${esc(i.s)}</small>`:''}</div>${ckEdit?`<button class="iconbtn" data-ckdel="${i.k}" data-sec="${sec.id}" aria-label="削除">✕</button>`:''}</div>`).join('')}
-    ${ckEdit?`<div class="row" style="margin-top:10px;gap:8px"><input type="text" placeholder="項目を追加" data-addin="${sec.id}" style="flex:1;min-width:0"><button class="btn small" data-add="${sec.id}">追加</button></div>`:''}
+    ${sec.links?`<div class="links">${sec.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener">${esc(l.t)} ↗</a>`).join('')}</div>`:''}
+    ${(()=>{const row=i=>`<div class="ck ${i.x?'conf':''} ${S.checks[i.k]?'on':''}" data-ck="${i.k}"><div class="box"></div><div class="txt" style="flex:1">${esc(i.n)} ${i.w?'<span class="tag">失格注意</span>':''}${i.s?`<small>${esc(i.s)}</small>`:''}</div>${ckEdit?`<button class="iconbtn" data-ckdel="${i.k}" data-sec="${sec.id}" aria-label="削除">✕</button>`:''}</div>`;
+      const goods=its.filter(i=>!i.x), conf=its.filter(i=>i.x);
+      return (goods.length&&conf.length?'<div class="subh">持っていく物</div>':'')+goods.map(row).join('')+(conf.length?'<div class="subh conf">確認すること</div>'+conf.map(row).join(''):'');})()}
+    ${ckEdit?`<div class="row" style="margin-top:10px;gap:6px"><input type="text" placeholder="項目を追加" data-addin="${sec.id}" style="flex:1;min-width:0"><button class="btn small" data-add="${sec.id}" data-type="g">＋物</button><button class="btn small sec" data-add="${sec.id}" data-type="x">＋確認</button></div>`:''}
   </div>`}).join('')}
   ${ckEdit && Object.keys(S.ckHide||{}).length?`<button class="btn sec" id="ckrestore" style="margin-bottom:10px">削除した最初からある項目を元に戻す</button>`:''}
   <button class="btn ghost" id="ckreset">チェックを全部外す（次の練習用）</button>`;
@@ -676,13 +842,14 @@ function vCheck(){
     if(idx>=0) custom.splice(idx,1); else S.ckHide[k]=true;
     delete S.checks[k]; store.save(); vCheck(); });
   $v.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{ const sid=b.dataset.add; const inp=$v.querySelector(`[data-addin="${sid}"]`); const n=inp.value.trim(); if(!n) return;
-    S.ckAdd=S.ckAdd||{}; (S.ckAdd[sid]=S.ckAdd[sid]||[]).push({k:'u'+Date.now().toString(36)+Math.floor(Math.random()*1000),n}); store.save(); vCheck();
+    S.ckAdd=S.ckAdd||{}; const it={k:'u'+Date.now().toString(36)+Math.floor(Math.random()*1000),n}; if(b.dataset.type==='x') it.x=1; (S.ckAdd[sid]=S.ckAdd[sid]||[]).push(it); store.save(); vCheck();
     const again=$v.querySelector(`[data-addin="${sid}"]`); if(again) again.focus(); });
-  $v.querySelectorAll('[data-addin]').forEach(inp=>inp.onkeydown=e=>{ if(e.key==='Enter'&&!e.isComposing){ $v.querySelector(`[data-add="${inp.dataset.addin}"]`).click(); } });
+  $v.querySelectorAll('[data-addin]').forEach(inp=>inp.onkeydown=e=>{ if(e.key==='Enter'&&!e.isComposing){ $v.querySelector(`[data-add="${inp.dataset.addin}"][data-type="g"]`).click(); } });
   $v.querySelectorAll('[data-mt]').forEach(b=>b.onclick=()=>{ S.modelType=b.dataset.mt; store.save(); vCheck(); });
+  bindSegView();
   document.getElementById('ckedit').onclick=()=>{ ckEdit=!ckEdit; vCheck(); };
   const rs=document.getElementById('ckrestore'); if(rs) rs.onclick=()=>{ S.ckHide={}; store.save(); vCheck(); toast('元に戻しました'); };
-  document.getElementById('ckreset').onclick=()=>confirmBox('チェックを全部外しますか？',()=>{S.checks={};store.save();render()});
+  document.getElementById('ckreset').onclick=()=>confirmBox('持ち物のチェックを全部外しますか？',()=>{Object.keys(S.checks).forEach(k=>{if(!k.startsWith('sc-'))delete S.checks[k]});store.save();render()});
 }
 
 /* ================= 写真セルフチェック ================= */
